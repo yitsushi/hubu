@@ -2,12 +2,10 @@ import logging
 import re
 import threading
 import unicodedata
-from hubu.bucket_client import BucketClient
 
 class Base(object):
     def __init__(self):
         self.log = logging.getLogger(self.__class__.__name__)
-        self.__bucket_client = None
 
     def slugify(self, value):
         """
@@ -22,21 +20,8 @@ class Base(object):
         value = re.sub(r'[^\w\s-]', '', value).strip().lower()
         return re.sub(r'[-\s]+', '-', value)
 
-    def s3(self):
-        if self.__bucket_client is None:
-            self.log.info('Create bucket client')
-            self.__bucket_client = BucketClient()
-        return self.__bucket_client
-
 
 class ThreadedBase(threading.Thread):
     def __init__(self, thread_id):
         threading.Thread.__init__(self)
         self.log = logging.getLogger(f'{self.__class__.__name__}#{thread_id}')
-        self.__bucket_client = None
-
-    def s3(self):
-        if self.__bucket_client is None:
-            self.log.info('Create bucket client')
-            self.__bucket_client = BucketClient()
-        return self.__bucket_client

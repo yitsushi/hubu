@@ -45,6 +45,6 @@ class DownloadManager(Base):
         return self.__lock
 
     def status_line(self):
-        line = " ".join(["  {:6.2f}%  ".format(t.progress() * 100) for t in self.threads])
+        line = " ".join(["  {:s}{:6.2f}%  ".format(t.action_icon(), t.progress() * 100) for t in self.threads])
         self.log.info(f"[{self.queue().qsize()}] {line}")
 

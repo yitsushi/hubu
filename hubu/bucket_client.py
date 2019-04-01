@@ -11,13 +11,13 @@ class BucketClient:
         options = {}
 
         if 'ENDPOINT_URL' in os.environ:
-            options['ENDPOINT_URL'] = os.environ.get('ENDPOINT_URL')
+            options['endpoint_url'] = os.environ.get('ENDPOINT_URL')
 
         if 'AWS_ACCESS_KEY_ID' in os.environ:
-            options['AWS_ACCESS_KEY_ID'] = os.environ.get('AWS_ACCESS_KEY_ID')
+            options['aws_access_key_id'] = os.environ.get('AWS_ACCESS_KEY_ID')
 
         if 'AWS_SECRET_ACCESS_KEY' in os.environ:
-            options['AWS_SECRET_ACCESS_KEY'] = os.environ.get('AWS_SECRET_ACCESS_KEY')
+            options['aws_secret_access_key'] = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
         if 'BUCKET_NAME' in os.environ:
             self.bucket_name = os.environ.get('BUCKET_NAME')
@@ -49,6 +49,12 @@ class BucketClient:
         self.__s3.put_object(Bucket=self.bucket_name,
                              Key=path,
                              Body=body)
+
+    def upload_fileobj(self, body, path, callback=None):
+        self.__s3.upload_fileobj(Bucket=self.bucket_name,
+                                 Key=path,
+                                 Fileobj=body,
+                                 Callback=callback)
 
     def file_size(self, path):
         """Return key's size, or zero if does not exist"""
