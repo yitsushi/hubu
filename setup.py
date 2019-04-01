@@ -14,7 +14,7 @@ with open("README.md", "r") as f:
 setup(name='hubu',
       version=__version__,
       packages=find_packages(),
-      url='https://gitea.code-infection.com/efertone/hubu',
+      url='https://github.com/yitsushi/hubu',
       author='Balazs Nadasdi',
       author_email='efertone@pm.me',
       long_description=long_description,
