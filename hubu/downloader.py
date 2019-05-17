@@ -61,7 +61,7 @@ class Downloader(ThreadedBase):
 
             if size != 0 and size != item.size:
                 self.log.info(f'{item.path()} already in there, but with wrong size')
-                self.s3().delete_object(path)
+                self.s3().delete_object(item.path())
 
             self._target_size = item.size
             self._transferred_bytes = 0
