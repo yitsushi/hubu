@@ -17,7 +17,8 @@ class BucketClient:
             options['aws_access_key_id'] = os.environ.get('AWS_ACCESS_KEY_ID')
 
         if 'AWS_SECRET_ACCESS_KEY' in os.environ:
-            options['aws_secret_access_key'] = os.environ.get('AWS_SECRET_ACCESS_KEY')
+            options['aws_secret_access_key'] = os.environ.get(
+                'AWS_SECRET_ACCESS_KEY')
 
         if 'BUCKET_NAME' in os.environ:
             self.bucket_name = os.environ.get('BUCKET_NAME')

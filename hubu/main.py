@@ -1,4 +1,3 @@
-import boto3
 import logging
 import os
 import time
@@ -14,12 +13,16 @@ sess = os.environ.get('HUMBLE_BUNDLE_SESSION')
 
 
 def main():
-    logging.basicConfig(level=getattr(logging, 'INFO', None),
-                        format='%(asctime)s | %(levelname)-8s | %(name)-20s | %(message)s')
+    logging.basicConfig(
+        level=getattr(
+            logging,
+            'INFO',
+            None),
+        format='%(asctime)s | %(levelname)-8s | %(name)-20s | %(message)s')
 
     with DownloadManager(workers=5) as mng:
         acceptable_platforms = [
-                'ebook', 'video'
+            'ebook', 'video'
         ]
         sum_size = 0
         purchases = HumbleBundle(sess).purchases()
@@ -53,21 +56,3 @@ def main():
             mng.status_line()
             time.sleep(1)
             pass
-
-
-
-"""
-# Fill
-log.info('prefill')
-queueLock.acquire()
-main()
-queueLock.release()
-
-while not downloadQueue.empty():
-    line = " ".join(["  {:6.2f}%  ".format(t.progress() * 100) for t in threads])
-    print(f"\r[{downloadQueue.qsize()}] {line}", end="")
-    #time.sleep(1)
-    pass
-
-"""
-

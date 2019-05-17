@@ -1,9 +1,9 @@
 import urllib
 import tempfile
-import threading
 import time
 from hubu.base import ThreadedBase
 from hubu.bucket_client import BucketClient
+
 
 class Downloader(ThreadedBase):
     def __init__(self, thread_id, manager):
@@ -33,7 +33,6 @@ class Downloader(ThreadedBase):
         }
         return actions.get(self.action, ' ')
 
-
     def run(self):
         self.log.info(f'--- Start #{self.thread_id}')
         self.process()
@@ -60,7 +59,8 @@ class Downloader(ThreadedBase):
                 continue
 
             if size != 0 and size != item.size:
-                self.log.info(f'{item.path()} already in there, but with wrong size')
+                self.log.info(
+                    f'{item.path()} already in there, but with wrong size')
                 self.s3().delete_object(item.path())
 
             self._target_size = item.size
@@ -77,11 +77,11 @@ class Downloader(ThreadedBase):
         self.action = 'download'
         try:
             url = urllib.request.urlopen(source)
-        except:
-            print("SKIP", source, fullPath)
+        except BaseException:
+            print("SKIP", source, dest)
             return
 
-        block_size = (1024*blockSize)
+        block_size = (1024 * blockSize)
         while True:
             buf = url.read(block_size)
             if not buf:
@@ -93,6 +93,7 @@ class Downloader(ThreadedBase):
         self.action = 'upload'
         self.log.info(f"Upload {dest}")
         self._transferred_bytes = 0
+
         def upload_progress(tx):
             self._transferred_bytes = self._transferred_bytes + tx
         self.s3().upload_fileobj(source, dest, callback=upload_progress)

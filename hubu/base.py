@@ -3,6 +3,7 @@ import re
 import threading
 import unicodedata
 
+
 class Base(object):
     def __init__(self):
         self.log = logging.getLogger(self.__class__.__name__)
@@ -16,7 +17,9 @@ class Base(object):
         Source: https://docs.djangoproject.com/en/2.1/_modules/django/utils/text/#slugify
         """
         value = str(value)
-        value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
+        value = unicodedata.normalize(
+            'NFKD', value).encode(
+            'ascii', 'ignore').decode('ascii')
         value = re.sub(r'[^\w\s-]', '', value).strip().lower()
         return re.sub(r'[-\s]+', '-', value)
 

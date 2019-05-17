@@ -3,6 +3,7 @@ import threading
 from hubu.base import Base
 from hubu.downloader import Downloader
 
+
 class DownloadManager(Base):
     def __init__(self, workers):
         super(__class__, self).__init__()
@@ -45,6 +46,6 @@ class DownloadManager(Base):
         return self.__lock
 
     def status_line(self):
-        line = " ".join(["  {:s}{:6.2f}%  ".format(t.action_icon(), t.progress() * 100) for t in self.threads])
+        line = " ".join(["  {:s}{:6.2f}%  ".format(
+            t.action_icon(), t.progress() * 100) for t in self.threads])
         self.log.info(f"[{self.queue().qsize()}] {line}")
-

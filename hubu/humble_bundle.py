@@ -10,9 +10,13 @@ class HumbleBundle(Base):
         self.__cookies = dict(_simpleauth_sess=auth_session_id)
 
     def purchases(self):
-        response = requests.get('https://www.humblebundle.com/home/purchases', cookies=self.__cookies)
-        keys = json.loads(re.search(r'"gamekeys"\s*:\s*(.*)', response.text).groups()[0][:-1])
+        response = requests.get(
+            'https://www.humblebundle.com/home/purchases',
+            cookies=self.__cookies)
+        keys = json.loads(re.search(r'"gamekeys"\s*:\s*(.*)',
+                                    response.text).groups()[0][:-1])
         return [Purchase(key, self.__cookies) for key in keys]
+
 
 class Purchase(Base):
     def __init__(self, key, cookies):
@@ -23,7 +27,8 @@ class Purchase(Base):
         self.sanitized_name = None
 
     def _download_info(self):
-        url = f'https://www.humblebundle.com/api/v1/order/{self.key}?all_tpkds=true'
+        base = 'https://www.humblebundle.com/api/v1/order/'
+        url = f'{base}{self.key}?all_tpkds=true'
         response = requests.get(url, cookies=self.cookies)
         self.info = json.loads(response.text)
         self.sanitized_name = self.slugify(self.info['product']['human_name'])

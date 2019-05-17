@@ -14,8 +14,9 @@ class Downloadable(Base):
 
     def __lt__(self, other):
         return self.size < getattr(other, 'size', other)
+
     def __gt__(self, other):
         return self.size > getattr(other, 'size', other)
+
     def __aq__(self, other):
         return self.size == getattr(other, 'size', other)
-
